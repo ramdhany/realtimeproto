@@ -17,6 +17,9 @@ public class SimpleNumberServiceImpl extends SimpleNumberServiceImplBase {
 	
 	@Override
 	public void getNumber(NumSeqRequest request, StreamObserver<NumSeqResponse> responseObserver) {
+
+		System.out.println("Start number value: "  + request.getStartNumber());
+
 		
 		NumSeqResponse response = NumSeqResponse.newBuilder()
 				.setClientId(request.getClientId())

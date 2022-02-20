@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+
+option java_multiple_files = true;
+option java_package = "uk.co.rajivr.numsequence";
+
+
+service SimpleNumberService{
+    rpc GetNumber(NumSeqRequest) returns (NumSeqResponse);
+}
+
+
+service NumberSequenceGenerator{
+    rpc startNumberSequence(NumSeqRequest) returns (stream NumSeqResponse);
+}
+
+
+
+
+enum ServerMode{
+    STATELESS_SERVER = 0;
+    STATEFUL_SERVER = 1;
+}
+
+
+message NumSeqRequest{
+    string clientId = 1;
+    uint64 startNumber = 2;
+    int32 intervalMs = 3;
+
+}
+
+message NumSeqResponse{
+    string clientId = 1;
+    int32 SeqNo = 2; 
+    uint64 number = 3;
+    int64 checksum = 4;
+}
+
+

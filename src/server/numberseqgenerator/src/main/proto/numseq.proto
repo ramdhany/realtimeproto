@@ -27,6 +27,8 @@ message NumSeqRequest{
     string clientId = 1;
     uint64 startNumber = 2;
     int32 intervalMs = 3;
+    uint32 numTotalMessages = 4;
+    ServerMode serviceMode = 5;
 
 }
 

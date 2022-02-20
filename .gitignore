@@ -28,3 +28,6 @@ package-lock.json
 deploy/
 
 target/
+
+
+.vscode/

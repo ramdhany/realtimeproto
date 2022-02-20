@@ -1,6 +1,8 @@
 package uk.co.rajivr.kata;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -20,6 +22,8 @@ public class NumSequenceServer
     
     private final Server server;
     
+    private ExecutorService executor = Executors.newFixedThreadPool(5);
+    
     
     
 public NumSequenceServer(int port) {
@@ -31,7 +35,9 @@ public NumSequenceServer(int port) {
     public NumSequenceServer(ServerBuilder<?> serverBuilder, int port) {
     	
     	this.port = port;
-    	this.server = serverBuilder.addService(new SimpleNumberServiceImpl()).build();
+    	// create a grpc server with our own thread pool to service requests
+    	this.server = serverBuilder.executor(executor).addService(new StatelessNumberSeqGenImpl()).build();
+
 		
 	}
 

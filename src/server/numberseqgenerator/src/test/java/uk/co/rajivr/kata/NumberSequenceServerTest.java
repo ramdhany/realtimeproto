@@ -6,12 +6,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -32,7 +31,7 @@ import io.grpc.inprocess.InProcessChannelBuilder;
 public class NumberSequenceServerTest 
 {
 
-	private int port = 5000;
+	// private int port = 5000;
 	private ExecutorService executor = Executors.newFixedThreadPool(4);
 
 	/**
@@ -88,7 +87,6 @@ public class NumberSequenceServerTest
 		// send an async request and test result via a callback on return
 		NumSeqRequest request = NumSeqRequest.newBuilder()
 				.setClientId("client")
-				.setStartNumber(123)
 				.build();
 
 		ListenableFuture<NumSeqResponse> future = stub.getNumber(request);

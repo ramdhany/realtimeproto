@@ -1,0 +1,27 @@
+{
+    "name": "num-sequence-gen-client",
+    "description": "Client application for Stateless and Stateful NumberSequenceGenerator servers",
+    "authors": "Rajiv Ramdhany",
+    "version": "1.0.0",
+    "main": "src/main.js",
+    "scripts": {
+        "start": "node ./src/main.js -v -s http://localhost:5000 -m 1 -c 10",
+        "debug": "nodemon --legacy-watch --watch ./src --inspect=0.0.0.0:5855 --nolazy ./src/main.js -v -s localhost:5000 -m 1 -c 10"
+    },
+    "dependencies": {
+        "command-line-args": "^5.2.1",
+        "command-line-usage": "^6.1.0",
+        "url": "^0.11.0",
+        "weak-map": "^1.0.8",
+        "winston": "^2.4.0",
+        "winston-daily-rotate-file": "^1.7.2",
+        "@grpc/proto-loader": "^0.5.0",
+        "async": "^1.5.2",
+        "google-protobuf": "^3.0.0",
+        "@grpc/grpc-js": "^1.1.0",
+        "lodash": "^4.6.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    }
+}

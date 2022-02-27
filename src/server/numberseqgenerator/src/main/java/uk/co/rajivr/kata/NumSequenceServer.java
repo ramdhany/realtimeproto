@@ -22,13 +22,14 @@ public class NumSequenceServer
     
     private final Server server;
     
-    private ExecutorService executor = Executors.newFixedThreadPool(5);
+    private static ExecutorService executor = Executors.newFixedThreadPool(5);
     
     
     
 public NumSequenceServer(int port) {
     	
-    	this(ServerBuilder.forPort(port), port);		
+    // use the internal threadpool for listening to responses by default	
+	this(ServerBuilder.forPort(port).executor(executor), port);		
 	}
     
     
@@ -36,10 +37,10 @@ public NumSequenceServer(int port) {
     	
     	this.port = port;
     	// create a grpc server with our own thread pool to service requests
-    	this.server = serverBuilder.executor(executor).addService(new StatelessNumberSeqGenImpl()).build();
-
-		
+    	this.server = serverBuilder.addService(new StatelessNumberSeqGenService()).build();
 	}
+    
+ 
 
 	/** Start serving requests. */
     public void start() throws IOException {

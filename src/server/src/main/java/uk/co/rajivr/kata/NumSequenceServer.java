@@ -85,8 +85,8 @@ public class NumSequenceServer
 	 */
 	public static void main(String[] args) throws Exception {
 
-		// start server on Port 2000
-		// TODO to use user-provided port number
+		// start server on port 5000
+		// TODO to use user-provided port
 
 		NumSequenceServer server = new NumSequenceServer(5000);
 		server.start();

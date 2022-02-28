@@ -103,7 +103,7 @@ const sections = [
           },
           {
             name: 'mode',
-            description: 'Service mode: 1 - STATELESS, 2 - STATEFUL',
+            description: 'Service mode: 0 - STATELESS, 1 - STATEFUL',
             alias: 'm',
             type: Number,
             typeLabel: '{underline number}'
@@ -168,7 +168,6 @@ function main() {
         config.count = options.count;
 
         
-
         logger.debug("config: ", JSON.stringify(config));
 
         var sum = 0;
@@ -176,6 +175,7 @@ function main() {
         var args = {
           serviceURL: config.serviceURL,
           count: config.count,
+          serverMode: config.mode,
           processorFn: (value) =>{
             sum += value;
             logger.info(value, " sum: ", sum);
@@ -225,9 +225,10 @@ main();
 
 
 /**
- * 
+ * Async function to get a sequence of numbers from NumberSeqGenerator service
  * @param {*} args object with the following properties and values
- * @param {ServiceClientImpl} args.client  a ServiceClientImpl object representing a grpc connected client
+ * @param {string} args.serviceURL  grpc server name and port e.g. localhost:5000
+ * @param {number} args.count  number of values to receive from service
  * @param {number} args.count  number of values to receive from service
  * @param {function} args.processorFn an aggregator function to process received values
  * @param {*} args.restartValue Optional start value
@@ -241,14 +242,20 @@ function GetNumberSequence(args)
   var count = args.count;
   var processorFn = args.processorFn;
   var restartValue = args.restartValue;
+  var serviceMode = args.serverMode ;
 
   return new Promise(function(resolve, reject){
 
     logger.info("Getting ", count, " numbers from NumberSequenceGenerator service ...");
+    
+       
+    // create a request object
     var numSeqRequest = {
         clientId: "testclient",
         startNumber: restartValue || 0,
-        intervalMs: 0
+        intervalMs: 0,
+        numTotalMessages: count,
+        serviceMode: serviceMode
     };
     logger.debug(numSeqRequest);
 
@@ -283,8 +290,6 @@ function GetNumberSequence(args)
 
       if (i === count)
       {
-        
-        
         resolve(count);
       }else
       {

@@ -93,15 +93,13 @@ To run the client with a **stateless** server (mode: 1) running on port 5000 and
     $ node src/main.js -v -s localhost:5000 -m 1 -c 10
 
 
-
-
 ## Server: Number Sequence Generator Service 
 Written in Java as a single service that supports both stateful and stateless modes.
 Server runs on port 5000 (specifying a port number as a command-line parameter isn't supported yet)
 
 ### Requirements
-Maven 3.8.4
-
+- Maven 3.8.4
+- Java 8 or higher (JDK 1.8)
 
 ### Running and builing the server
 
@@ -121,12 +119,18 @@ Note: There is no command-line parameter for specifying a server port yet. Serve
 
 To change the port number, see the `main()` method in `NumSequenceServer.java`.
 
-#### b. OR Build using docker
+#### b. OR Build and run using docker
 
+Note: the docker container crashes on start due to a JRE crash issue. This requires fixing.
 
+    # build docker image
+    $ docker build -t numsequenceservice:latest .   
+    # run container 
+    $ docker run -p 5000:5000 numsequenceservice:latest
 
 
 ## TODO
 1. Fix number overflow issue in stateless server.
   a. When a long sequence of numbers is requested from stateless server, an integer flow happens. To check if overflow is due to number type used in server or in protocol buffer message.
-2. Fix stateful server error: when server thread blocks, client retries. This causes an new (an empty) ClientState object to be created at the server (stateful impl.)
+2. Fix stateful server error: when server thread blocks, client retries. This causes a new (an empty) ClientState object to be created at the server (stateful impl.)
+3. Fix docker container crash on start issue 

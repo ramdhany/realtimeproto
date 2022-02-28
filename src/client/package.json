@@ -5,7 +5,8 @@
     "version": "1.0.0",
     "main": "src/main.js",
     "scripts": {
-        "start": "node ./src/main.js -v -s http://localhost:5000 -m 1 -c 10",
+        "start_stateless": "node ./src/main.js -v -s localhost:5000 -m 0 -c 10",
+        "start_stateful": "node ./src/main.js -v -s localhost:5000 -m 0 -c 10",
         "debug": "nodemon --legacy-watch --watch ./src --inspect=0.0.0.0:5855 --nolazy ./src/main.js -v -s localhost:5000 -m 1 -c 10"
     },
     "dependencies": {

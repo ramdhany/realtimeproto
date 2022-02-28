@@ -88,14 +88,31 @@ To run the client with a **stateless** server (mode: 0) running on port 5000 and
 
 
 
-To run the client with a **stateless** server (mode: 1) running on port 5000 and receive `10` numbers: 
+To run the client with a **stateful** server (mode: 1) running on port 5000 and receive `10` numbers: 
 
     $ node src/main.js -v -s localhost:5000 -m 1 -c 10
 
+Note: A checksum is returned
 
 ## Server: Number Sequence Generator Service 
 Written in Java as a single service that supports both stateful and stateless modes.
 Server runs on port 5000 (specifying a port number as a command-line parameter isn't supported yet)
+
+
+In `STATELESS` mode, the server generates a random integer as the first number and generates an infinite sequence by doubling the number each time. The server stops servcing the request when the client ends the request or disconnects (the gRPC channel).
+
+
+In `STATEFUL` mode, when the server receives a request from a new client, it uses a Pseudo Random Number Generator (`org.apache.commons.math3.random.RandomDataGenerator`) to generate `n` random integers (as requested by client). Random number generation is done on a seperate thread than the thread serviving the client request. 
+Random numbers are stored in a `ClientState` object which includes (dummy) operations to persist the entire state to a data store. 
+
+Note: 
+- If a client issues a request to the stateful server after reconnection. the server needs to load all the client's state from the datastore. **This is not implemented.**
+- The client state must ne deleted after a client has disconnected from the server for more than 30s.  **This is not implemented.**
+
+
+
+
+
 
 ### Requirements
 - Maven 3.8.4
@@ -129,8 +146,10 @@ Note: the docker container crashes on start due to a JRE crash issue. This requi
     $ docker run -p 5000:5000 numsequenceservice:latest
 
 
-## TODO
+## TODOs and  Unimplemented features
 1. Fix number overflow issue in stateless server.
   a. When a long sequence of numbers is requested from stateless server, an integer flow happens. To check if overflow is due to number type used in server or in protocol buffer message.
 2. Fix stateful server error: when server thread blocks, client retries. This causes a new (an empty) ClientState object to be created at the server (stateful impl.)
 3. Fix docker container crash on start issue 
+4. If a client issues a request to the stateful server after reconnection. the server needs to load all the client's state from the datastore. **This is not implemented.**
+5. The client state must ne deleted after a client has disconnected from the server for more than 30s.  **This is not implemented.**

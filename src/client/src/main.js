@@ -95,11 +95,11 @@ const sections = [
             type: Boolean
           },
           {
-            name: 'serviceUrl',
-            description: 'Number sequence generator service URL',
+            name: 'server',
+            description: 'Number sequence generator service host:port',
             alias: 'u',
             type: String,
-            typeLabel: '{underline URL}'
+            typeLabel: '{underline host:port}'
           },
           {
             name: 'mode',
